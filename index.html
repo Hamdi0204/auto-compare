@@ -4,359 +4,301 @@
   <meta charset="UTF-8" />
   <title>Auto Vergleichsrechner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Tailwind über CDN -->
+  <!-- Tailwind CSS über CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
 
-<body class="bg-slate-950 text-slate-50 min-h-screen flex items-center justify-center">
-<div class="w-full max-w-5xl mx-auto px-4 py-10">
+  <div class="relative w-full max-w-6xl mx-auto px-4 py-10 flex flex-col items-center">
 
-  <!-- Header -->
-  <header class="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-    <div>
-      <h1 class="text-3xl md:text-4xl font-semibold tracking-tight">
-        Fahrzeug Vergleich
-      </h1>
-      <p class="text-slate-400 mt-2">
-        Füge einen Fahrzeug-Link von
-        <span class="font-medium text-slate-200">mobile.de</span>,
-        <span class="font-medium text-slate-200">AutoScout24</span> oder
-        <span class="font-medium text-slate-200">Kleinanzeigen</span> ein.
-      </p>
+    <!-- Porsche Silhouette im Hintergrund -->
+    <div class="pointer-events-none absolute inset-x-0 top-24 -z-10">
+      <svg class="w-full opacity-10" viewBox="0 0 1800 320" xmlns="http://www.w3.org/2000/svg">
+        <!-- Bodenlinie -->
+        <rect x="80" y="230" width="1640" height="8" rx="4" fill="#0f172a" opacity="0.14" />
+        <!-- Silhouette (vereinfacht 911-artig) -->
+        <path
+          d="M120 225
+             C260 175 430 150 620 145
+             L720 142
+             C820 120 930 110 1040 112
+             C1160 115 1250 130 1340 155
+             C1430 180 1520 210 1640 225"
+          fill="none"
+          stroke="#0f172a"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
     </div>
-    <div class="text-xs md:text-sm text-slate-500">
-      Beta • Nur zu Test-/Demo-Zwecken<br>
-      Automatisches Scrapen kann gegen AGB verstoßen.
-    </div>
-  </header>
 
-  <!-- Eingabe-Card -->
-  <section class="bg-slate-900/60 border border-slate-800 rounded-3xl shadow-xl p-6 mb-8 backdrop-blur">
-
-    <form id="compare-form" class="space-y-4">
-
-      <!-- Fahrzeug-Link -->
-      <label class="block text-sm font-medium text-slate-200 mb-1">
-        Fahrzeug-Link
-      </label>
-      <input
-        id="listing-url"
-        type="url"
-        required
-        placeholder="https://www.mobile.de/..."
-        class="w-full rounded-2xl bg-slate-950/70 border border-slate-700 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition"
-      />
-
-      <!-- Neue Eingabefelder -->
-      <div class="grid gap-3 md:grid-cols-4 mt-2">
-
-        <!-- Baujahr -->
-        <div>
-          <label class="block text-xs font-medium text-slate-300 mb-1">Baujahr</label>
-          <input
-            id="year-input"
-            type="number"
-            min="1980"
-            max="2100"
-            placeholder="2017"
-            class="w-full rounded-2xl bg-slate-950/70 border border-slate-700 px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-blue-500 transition"
-          />
-        </div>
-
-        <!-- Kilometer -->
-        <div>
-          <!-- Preis -->
-<div>
-  <label class="block text-xs font-medium text-slate-300 mb-1">Preis (€)</label>
-  <input
-    id="price-input"
-    type="number"
-    min="0"
-    step="100"
-    placeholder="z.B. 15990"
-    class="w-full rounded-2xl bg-slate-950/70 border border-slate-700 px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-blue-500 transition"
-  />
-</div>
-
-          <label class="block text-xs font-medium text-slate-300 mb-1">Kilometer</label>
-          <input
-            id="km-input"
-            type="number"
-            min="0"
-            step="500"
-            placeholder="85000"
-            class="w-full rounded-2xl bg-slate-950/70 border border-slate-700 px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-blue-500 transition"
-          />
-        </div>
-
-        <!-- Getriebe -->
-        <div>
-          <label class="block text-xs font-medium text-slate-300 mb-1">Getriebe</label>
-          <select
-            id="transmission-select"
-            class="w-full rounded-2xl bg-slate-950/70 border border-slate-700 px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-blue-500 transition"
-          >
-            <option value="">– auswählen –</option>
-            <option value="Automatik">Automatik</option>
-            <option value="Manuell">Manuell</option>
-            <option value="Halbautomatik">Halbautomatik</option>
-          </select>
-        </div>
-
-        <!-- Kraftstoff -->
-        <div>
-          <label class="block text-xs font-medium text-slate-300 mb-1">Kraftstoff</label>
-          <select
-            id="fuel-select"
-            class="w-full rounded-2xl bg-slate-950/70 border border-slate-700 px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-blue-500 transition"
-          >
-            <option value="">– auswählen –</option>
-            <option value="Benzin">Benzin</option>
-            <option value="Diesel">Diesel</option>
-          </select>
-        </div>
-
+    <!-- Header -->
+    <header class="w-full flex flex-col md:flex-row md:items-center md:justify-between mb-10">
+      <div>
+        <h1 class="text-3xl md:text-4xl font-semibold tracking-tight">
+          Fahrzeug Vergleich
+        </h1>
+        <p class="text-slate-500 mt-2">
+          Eingeben. Analysieren. Sofort Marktbewertung erhalten.
+        </p>
       </div>
+      <div class="mt-4 md:mt-0 text-xs md:text-sm text-slate-400">
+        Vergleichsrechner • Marktanalyse • Preisbewertung
+      </div>
+    </header>
 
-      <!-- Filter & Button -->
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mt-4">
-        <div class="flex flex-wrap gap-3 text-xs text-slate-400">
-          <span class="inline-flex items-center px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700">±25.000 km</span>
-          <span class="inline-flex items-center px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700">±1 Baujahr</span>
-          <span class="inline-flex items-center px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700">Marke & Modell identisch</span>
+    <!-- Karte mit Eingabeformular -->
+    <section class="w-full bg-white/90 backdrop-blur border border-slate-200 rounded-3xl shadow-xl shadow-slate-200/70 p-6 md:p-8">
+      <form id="search-form" class="space-y-4">
+
+        <!-- Modell -->
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">
+            Modell (z. B. Porsche 997, Golf 7 GTD, Audi A3)
+          </label>
+          <input
+            id="model"
+            type="text"
+            required
+            placeholder="Audi A3"
+            class="w-full rounded-xl bg-white border border-slate-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          />
         </div>
 
+        <!-- Zeile: EZ, km, PS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Erstzulassung ab</label>
+            <input
+              id="year"
+              type="number"
+              min="1950"
+              max="2100"
+              placeholder="2008"
+              class="w-full rounded-xl bg-white border border-slate-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Max. Kilometer</label>
+            <input
+              id="km"
+              type="number"
+              min="0"
+              placeholder="160000"
+              class="w-full rounded-xl bg-white border border-slate-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Min. Leistung (PS)</label>
+            <input
+              id="ps"
+              type="number"
+              min="0"
+              placeholder="320"
+              class="w-full rounded-xl bg-white border border-slate-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
+          </div>
+        </div>
+
+        <!-- Zeile: Kraftstoff / Getriebe / Beschädigt -->
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Kraftstoff</label>
+            <select
+              id="fuel"
+              class="w-full rounded-xl bg-white border border-slate-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            >
+              <option value="">Alle</option>
+              <option value="PETROL">Benzin</option>
+              <option value="DIESEL">Diesel</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Getriebe</label>
+            <select
+              id="gearbox"
+              class="w-full rounded-xl bg-white border border-slate-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            >
+              <option value="">Alle</option>
+              <option value="AUTO">Automatik</option>
+              <option value="SEMIAUTO">Halbautomatik</option>
+              <option value="AUTO_SEMIAUTO">Automatik + Halbautomatik</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Beschädigte anzeigen?</label>
+            <select
+              id="damaged"
+              class="w-full rounded-xl bg-white border border-slate-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            >
+              <option value="false">Nein</option>
+              <option value="true">Ja</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Submit-Button -->
         <button
           type="submit"
-          class="inline-flex items-center justify-center px-5 py-2.5 rounded-2xl text-sm font-medium bg-blue-500 hover:bg-blue-600 text-white shadow-lg transition"
+          class="w-full mt-2 bg-slate-900 text-white py-3 rounded-xl font-semibold text-sm md:text-base hover:bg-slate-800 active:bg-slate-900 transition shadow-md shadow-slate-500/30"
         >
-          Vergleich starten
+          Fahrzeug-Suche starten
         </button>
+      </form>
+
+      <!-- Portal-Buttons -->
+      <div id="portal-links" class="hidden mt-6 flex flex-col md:flex-row gap-4">
+        <a
+          id="btn-mobile"
+          target="_blank"
+          class="flex-1 text-center bg-blue-600 text-white py-3 rounded-xl font-semibold text-sm md:text-base hover:bg-blue-700 transition"
+        >
+          mobile.de öffnen
+        </a>
+        <a
+          id="btn-autoscout"
+          target="_blank"
+          class="flex-1 text-center bg-amber-500 text-white py-3 rounded-xl font-semibold text-sm md:text-base hover:bg-amber-600 transition"
+        >
+          AutoScout24 öffnen (demnächst)
+        </a>
+        <a
+          id="btn-kleinanzeigen"
+          target="_blank"
+          class="flex-1 text-center bg-emerald-600 text-white py-3 rounded-xl font-semibold text-sm md:text-base hover:bg-emerald-700 transition"
+        >
+          Kleinanzeigen öffnen (demnächst)
+        </a>
       </div>
-
-    </form>
-
-    <p id="status" class="mt-4 text-sm text-slate-400 hidden"></p>
-  </section>
-
-  <!-- Ergebnisse -->
-  <main id="results" class="space-y-6 hidden">
-    <section>
-      <h2 class="text-lg font-semibold mb-3">Ausgangsfahrzeug</h2>
-      <div id="base-car" class="bg-slate-900/70 border border-slate-800 rounded-3xl p-5"></div>
     </section>
 
-    <section>
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-lg font-semibold">Vergleichsfahrzeuge</h2>
-        <span id="compare-count" class="text-xs text-slate-400"></span>
-      </div>
-      <div id="compare-list" class="grid gap-4 md:grid-cols-2 xl:grid-cols-3"></div>
-    </section>
-  </main>
+    <!-- Footer -->
+    <footer class="mt-10 text-xs text-slate-400 text-center">
+      Auto Vergleichsrechner – Beta Version<br />
+      Nur zur privaten Nutzung.
+    </footer>
+  </div>
 
-  <footer class="mt-10 text-xs text-slate-500 text-center">
-    Demo-Oberfläche • Backend aktuell mit Beispiel-Daten<br>
-    Echte Datenabfrage nur mit AGB-konformen Quellen.
-  </footer>
-
-</div>
-
-<script>
-const form = document.getElementById('compare-form');
-const urlInput = document.getElementById('listing-url');
-const yearInput = document.getElementById('year-input');
-const kmInput = document.getElementById('km-input');
-const priceInput = document.getElementById('price-input');
-const transmissionSelect = document.getElementById('transmission-select');
-const fuelSelect = document.getElementById('fuel-select');
-
-const statusEl = document.getElementById('status');
-const resultsEl = document.getElementById('results');
-const baseCarEl = document.getElementById('base-car');
-const compareListEl = document.getElementById('compare-list');
-const compareCountEl = document.getElementById('compare-count');
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const url = urlInput.value.trim();
-  if (!url) return;
-
-  const userYear = yearInput.value ? parseInt(yearInput.value) : null;
-  const userKm = kmInput.value ? parseInt(kmInput.value) : null;
-  const userFuel = fuelSelect.value || null;
-  const userPrice = priceInput.value ? parseInt(priceInput.value) : null;
-  const userTransmission = transmissionSelect.value || null;
-
-  resultsEl.classList.add('hidden');
-  statusEl.classList.remove('hidden');
-  statusEl.textContent = 'Analysiere Fahrzeug …';
-
-  try {
-    const params = new URLSearchParams();
-params.set('url', url);
-if (userYear) params.set('year', userYear);
-if (userKm) params.set('km', userKm);
-if (userFuel) params.set('fuel', userFuel);
-if (userTransmission) params.set('transmission', userTransmission);
-if (userPrice) params.set('price', userPrice);
-
-const res = await fetch(
-  'http://localhost:3000/api/compare?' + params.toString()
-);
-
-    if (!res.ok) throw new Error('Server-Fehler ' + res.status);
-
-    const data = await res.json();
-
-    // Nutzerwerte überschreiben die Dummy-Werte:
-    if (userYear) data.baseCar.year = userYear;
-    if (userPrice) data.baseCar.price = userPrice;
-    if (userKm) data.baseCar.km = userKm;
-    if (userFuel) data.baseCar.fuel = userFuel;
-    if (userTransmission) data.baseCar.transmission = userTransmission;
-
-    renderResults(data);
-    statusEl.classList.add('hidden');
-
-  } catch (err) {
-    console.error(err);
-    statusEl.textContent = 'Fehler: ' + err.message;
-  }
-});
-
-function renderResults(data) {
-  const base = data.baseCar;
-  const comps = data.comparables || [];
-  // Sortieren nach bester Ersparnis (niedrigster Preis zuerst)
-comps.sort((a, b) => a.price - b.price);
-
-// Alternative Sortierung nach Gewinn in %
-// comps.sort((a, b) => a.priceDiffPercent - b.priceDiffPercent);
-  // Durchschnittspreis der Vergleichsfahrzeuge berechnen
-let avgPrice = 0;
-if (comps.length > 0) {
-  avgPrice = Math.round(
-    comps.reduce((sum, c) => sum + c.price, 0) / comps.length
-  );
-}
-
-// Gewinn in € & %
-let profitEuro = avgPrice - base.price;
-let profitPercent = base.price > 0 ? (profitEuro / base.price) * 100 : 0;
-
-// Farbe bestimmen
-let profitColor = "text-slate-300";
-if (profitEuro >= 1500) profitColor = "text-emerald-400";   // guter Gewinn
-else if (profitEuro >= 500) profitColor = "text-amber-300"; // ok
-else if (profitEuro < 0) profitColor = "text-red-400";      // Verlust
-
-  resultsEl.classList.remove('hidden');
-
-  baseCarEl.innerHTML = `
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <div class="text-sm uppercase tracking-wide text-slate-400 mb-1">Ausgangsfahrzeug</div>
-          <div class="text-xl font-semibold mb-1">
-            ${escapeHtml(base.make || '')} ${escapeHtml(base.model || '')}
-          </div>
-          <div class="text-sm text-slate-400">
-            Baujahr ${base.year ?? '-'} • ${formatKm(base.km)} km • ${escapeHtml(base.fuel || '-')} •
-            ${escapeHtml(base.transmission || '-')} • ${base.powerHp ?? '-'} PS
-          </div>
-        </div>
-        <div class="text-right text-sm">
-          <div class="text-sm mt-1 ${profitColor}">
-  Ø Marktpreis: ${formatPrice(avgPrice)}  
-  <br>
-  Gewinn: ${profitEuro >= 0 ? '+' : ''}${formatPrice(profitEuro)} 
-  (${profitPercent.toFixed(1)}%)
-</div>
-          <div class="text-2xl font-semibold text-slate-50">
-            ${base.price ? formatPrice(base.price) : '–'}
-          </div>
-          <div class="text-slate-400">Preis laut Inserat</div>
-          ${
-            base.url
-              ? `<a href="${base.url}" target="_blank" class="inline-flex text-xs text-blue-400 mt-1">Inserat öffnen →</a>`
-              : ''
-          }
-        </div>
-      </div>
-    `;
-
-  compareListEl.innerHTML = '';
-  comps.forEach((car) => {
-    const diff = car.priceDiffPercent;
-    let diffBadge = '';
-    if (typeof diff === 'number') {
-      const sign = diff > 0 ? '+' : '';
-      const color =
-        diff < 0
-          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-          : 'bg-amber-500/20 text-amber-300 border-amber-500/40';
-
-      diffBadge = `
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] border ${color}">
-          ${sign}${diff.toFixed(1)}% vs. Ausgang
-        </span>
-      `;
+  <!-- JavaScript -->
+  <script>
+    // Hilfsfunktion: PS → kW (mobile.de nutzt kW)
+    function psToKw(ps) {
+      if (!ps) return null;
+      const n = Number(ps);
+      if (Number.isNaN(n) || n <= 0) return null;
+      // 1 PS ≈ 0.7355 kW
+      return Math.round(n * 0.7355);
     }
 
-    compareListEl.innerHTML += `
-        <article class="bg-slate-900/80 border border-slate-800 rounded-3xl p-4">
-          <div class="space-y-2">
-            <h3 class="text-sm font-semibold">
-              ${escapeHtml(car.title)}
-            </h3>
-            <div class="text-xs text-slate-400">
-              ${car.year ?? '-'} • ${formatKm(car.km)} km •
-              ${escapeHtml(car.fuel)} • ${escapeHtml(car.transmission)} • ${car.powerHp} PS
-            </div>
-            ${diffBadge}
-          </div>
+    function buildMobileUrl(filters) {
+  const url = new URL("https://suchen.mobile.de/fahrzeuge/search.html");
+  const p = url.searchParams;
 
-          ${
-            car.url
-              ? `<a href="${car.url}" target="_blank"
-                   class="mt-4 inline-flex items-center justify-center text-xs font-medium px-3 py-2 rounded-2xl border border-slate-700 text-slate-100">
-                   Inserat ansehen →
-                 </a>`
-              : ''
-          }
-        </article>
-      `;
-  });
+  // Basis
+  p.set("isSearchRequest", "true");
+  p.set("ref", "dsp");
+  p.set("s", "Car");
+  p.set("vc", "Car");
+  p.set("sb", "p");
+  p.set("cn", "DE");
+  p.set("dam", filters.damaged === "true" ? "true" : "false");
 
-  compareCountEl.textContent = comps.length
-    ? `${comps.length} Angebote gefunden`
-    : 'Keine passenden Angebote gefunden';
+  // -----------------------------
+  // 🔍 Hersteller- & Modell-Erkennung
+  // -----------------------------
+  const MODELS = [
+    { brand: "audi", model: "a3", makeId: "1900", modelId: "8" },
+    { brand: "audi", model: "a4", makeId: "1900", modelId: "9" },
+    { brand: "vw", model: "golf", makeId: "25200", modelId: "1" },
+    { brand: "porsche", model: "997", makeId: "20100", modelId: "27" },
+    { brand: "bmw", model: "320", makeId: "3500", modelId: "13" }
+  ];
+
+  let input = (filters.model || "").toLowerCase();
+
+  let detected = MODELS.find(m =>
+    input.includes(m.brand) && input.includes(m.model)
+  );
+
+  if (!detected) {
+    // Falls nur Modell eingegeben wurde (z. B. "997")
+    detected = MODELS.find(m => input.includes(m.model));
+  }
+
+  if (detected) {
+    // ECHTER Mobile.de Modellfilter:
+    p.set("ms", `${detected.makeId};${detected.modelId};`);
+  } else {
+    // Fallback: Freitextsuche
+    p.set("q", filters.model.trim());
+  }
+
+  // -----------------------------
+  // EZ
+  // -----------------------------
+  if (filters.year) {
+    const y = parseInt(filters.year, 10);
+    if (!Number.isNaN(y)) p.set("fr", String(y));
+  }
+
+  // Kilometer
+  if (filters.km) {
+    const km = parseInt(filters.km, 10);
+    if (!Number.isNaN(km)) p.set("ml", ":" + String(km));
+  }
+
+  // Leistung PS → kW
+  if (filters.ps) {
+    const kw = Math.round(filters.ps * 0.7355);
+    p.set("pw", String(kw));
+  }
+
+  // Kraftstoff
+  if (filters.fuel) p.set("ft", filters.fuel);
+
+  // Getriebe
+  if (filters.gearbox === "AUTO") p.append("tr", "AUTOMATIC_GEAR");
+  if (filters.gearbox === "SEMIAUTO") p.append("tr", "SEMIAUTOMATIC_GEAR");
+  if (filters.gearbox === "AUTO_SEMIAUTO") {
+    p.append("tr", "AUTOMATIC_GEAR");
+    p.append("tr", "SEMIAUTOMATIC_GEAR");
+  }
+
+  return url.toString();
 }
 
-function formatKm(km) {
-  if (!km && km !== 0) return '-';
-  return new Intl.NumberFormat('de-DE').format(km) + ' km';
-}
 
-function formatPrice(price) {
-  if (!price && price !== 0) return '–';
-  return new Intl.NumberFormat('de-DE', {
-    style: 'currency',
-    currency: 'EUR'
-  }).format(price);
-}
+    // Formular-Submit
+    document.getElementById("search-form").addEventListener("submit", (e) => {
+      e.preventDefault();
 
-function escapeHtml(str) {
-  if (typeof str !== 'string') return str;
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-</script>
+      const filters = {
+        model:   document.getElementById("model").value,
+        year:    document.getElementById("year").value,
+        km:      document.getElementById("km").value,
+        ps:      document.getElementById("ps").value,
+        fuel:    document.getElementById("fuel").value,
+        gearbox: document.getElementById("gearbox").value,
+        damaged: document.getElementById("damaged").value
+      };
 
+      const mobileUrl = buildMobileUrl(filters);
+
+      // mobile.de Link setzen
+      document.getElementById("btn-mobile").href = mobileUrl;
+
+      // Platzhalter-Links für die anderen Portale (später implementieren)
+      document.getElementById("btn-autoscout").href = "#";
+      document.getElementById("btn-kleinanzeigen").href = "#";
+
+      // Buttons sichtbar machen
+      document.getElementById("portal-links").classList.remove("hidden");
+    });
+  </script>
 </body>
 </html>
